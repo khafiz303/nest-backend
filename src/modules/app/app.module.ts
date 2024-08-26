@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from '../user/user.module';
+import { UserModule } from '../users/users.module';
 import {ConfigModule , ConfigService} from '@nestjs/config'
 import configurations from 'src/configurations';
 import {SequelizeModule} from '@nestjs/sequelize'
+import { User } from 'src/modules/users/models/user.model';
+import { AuthModule } from '../auth/auth.module';
+import { TokenModule } from '../token/token.module';
 
 
 @Module({
@@ -24,13 +27,17 @@ import {SequelizeModule} from '@nestjs/sequelize'
         database : configService.get('db_name'),
         synchronize : true,
         autoLoadModels : true,
-        models : []
+        models : [User]
 
       })
     }),
-    UserModule],
+    UserModule , 
+    AuthModule,
+    TokenModule
+  ],
   
   controllers: [AppController],
   providers: [AppService],
+
 })
 export class AppModule {}
