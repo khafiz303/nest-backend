@@ -9,6 +9,7 @@ export class WatchlistService {
     constructor(@InjectModel(Watchlist) private readonly watchlistRepository : typeof Watchlist){}
 
     async createAsset(user , dto) : Promise<CreateAssetResponse>{
+       try {
         const watchList ={
             user : user.id,
             name : dto.name ,
@@ -16,11 +17,20 @@ export class WatchlistService {
         }
         await this.watchlistRepository.create(watchList)
         return watchList
+        
+       } catch (error) {
+        throw new Error(error)
+       }
     }
 
     async deleteAsset(userId : number , assetId : string) : Promise <boolean>{
-        await  this.watchlistRepository.destroy({where : {user : userId , id : assetId}}) 
-        return true
+        try {
+            await  this.watchlistRepository.destroy({where : {user : userId , id : assetId}}) 
+            return true
+        } catch (error) {
+            throw new Error(error)
+        }
+      
 
     }
 
