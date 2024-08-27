@@ -1,6 +1,7 @@
 import { Controller , Delete, Patch , Body, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CreateUserDTO, updateUserDTO } from './dto';
+
 import { JwtAuthGraud } from 'src/guards/jwt-guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -19,7 +20,7 @@ export class UserController {
 
     @UseGuards(JwtAuthGraud)
     @Delete()
-    deleteUser( @Req() request){
+    deleteUser( @Req() request) : Promise <boolean>{
         const user = request.user
         return this.userService.deleteUser(user.email)
     }
